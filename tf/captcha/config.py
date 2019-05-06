@@ -10,14 +10,15 @@ import os
 
 # path = os.getcwd()  # 项目所在路径
 path = os.path.abspath(os.path.join(os.getcwd(), "../.."))
-local_path = '/Users/wugang/datasets/image/captcha/4'
-captcha_path = local_path + '/train/train_data'  # 训练集-验证码所在路径
-validation_path = local_path + '/validation'  # 验证集-验证码所在路径
-test_data_path = local_path + '/test'  # 测试集-验证码文件存放路径
+captcha_path = path + '/data/captcha/train_data'  # 训练集-验证码所在路径
+validation_path = path + '/data/captcha/validation_data'  # 验证集-验证码所在路径
+test_data_path = path + '/data/captcha/test_data'  # 测试集-验证码文件存放路径
+
 output_path = path + '/data/captcha/result/result.txt'  # 测试结果存放路径
 model_path = path + '/data/captcha/model/model.ckpt'  # 模型存放路径
 
-# input_path = path + '/input'
+model = path + '/data/captcha/model/model.ckpt-5000.meta'
+model_checkpoint_path = path + '/data/captcha/model/'
 
 # 要识别的字符
 number = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']

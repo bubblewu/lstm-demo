@@ -29,72 +29,39 @@ def get_all_file(paths=captcha_path):
     print('文件夹数量为: {}'.format(len(all_target_file_list)))
 
 
-# def get_batch(data_path=captcha_path, is_training=True):
-#     """
-#     加载指定路径下的文件信息
-#     """
-#     # 读取路径下的所有文件名
-#     target_file_list = os.listdir(data_path)
-#     # 确认batch 大小
-#     batch = batch_size if is_training else len(target_file_list)
-#     # batch 数据
-#     batch_x = np.zeros([batch, time_steps, n_input])
-#     # batch 标签
-#     batch_y = np.zeros([batch, captcha_num, n_classes])
-#     for i in range(batch):
-#         # 确认要打开的文件名
-#         file_name = random.choice(target_file_list) if is_training else target_file_list[i]
-#         img = Image.open(data_path + '/' + file_name)  # 打开图片
-#         img = np.array(img)
-#         if len(img.shape) > 2:
-#             # 转换成灰度图像:(26,80,3) =>(26,80)
-#             img = np.mean(img, -1)
-#             # 标准化，为了防止训练集的方差过大而导致的收敛过慢问题。
-#             img = img / 255
-#             # img = np.reshape(img,[time_steps,n_input])  #转换格式：(2080,) => (26,80)
-#         batch_x[i] = img
-#
-#         label = np.zeros(captcha_num * n_classes)
-#         for num, char in enumerate(file_name.split('.')[0]):
-#             index = num * n_classes + char2index(char)
-#             try:
-#                 label[index] = 1
-#             except:
-#                 print(file_name)
-#
-#         label = np.reshape(label, [captcha_num, n_classes])
-#         batch_y[i] = label
-#     return batch_x, batch_y
-
-
 def get_batch(data_path=captcha_path, is_training=True):
-    target_file_list = os.listdir(data_path)  # 读取路径下的所有文件名
-
-    batch = batch_size if is_training else len(target_file_list)  # 确认batch 大小
-    batch_x = np.zeros([batch, time_steps, n_input])  # batch 数据
-    batch_y = np.zeros([batch, captcha_num, n_classes])  # batch 标签
-
+    """
+    加载指定路径下的文件信息
+    """
+    # 读取路径下的所有文件名
+    target_file_list = os.listdir(data_path)
+    # 确认batch 大小
+    batch = batch_size if is_training else len(target_file_list)
+    # batch 数据
+    batch_x = np.zeros([batch, time_steps, n_input])
+    # batch 标签
+    batch_y = np.zeros([batch, captcha_num, n_classes])
     for i in range(batch):
-        file_name = random.choice(target_file_list) if is_training else target_file_list[i]  # 确认要打开的文件名
+        # 确认要打开的文件名
+        file_name = random.choice(target_file_list) if is_training else target_file_list[i]
         img = Image.open(data_path + '/' + file_name)  # 打开图片
         img = np.array(img)
         if len(img.shape) > 2:
-            img = np.mean(img, -1)  # 转换成灰度图像:(26,80,3) =>(26,80)
-            img = img / 255  # 标准化，为了防止训练集的方差过大而导致的收敛过慢问题。
+            # 转换成灰度图像:(26,80,3) =>(26,80)
+            img = np.mean(img, -1)
+            # 标准化，为了防止训练集的方差过大而导致的收敛过慢问题。
+            img = img / 255
             # img = np.reshape(img,[time_steps,n_input])  #转换格式：(2080,) => (26,80)
         batch_x[i] = img
 
         label = np.zeros(captcha_num * n_classes)
-        dd = enumerate(file_name.split('.')[0])
-        for num, char in dd:
-            ind = char2index(char)
-            c = num * n_classes
-            index = n_classes + ind
-            # label[index] = 1
+        for num, char in enumerate(file_name.split('.')[0]):
+            index = num * n_classes + char2index(char)
             try:
                 label[index] = 1
             except:
                 print(file_name)
+
         label = np.reshape(label, [captcha_num, n_classes])
         batch_y[i] = label
     return batch_x, batch_y
@@ -132,6 +99,17 @@ def index2char(k):
     if index == -1:
         raise ValueError('No Map')
     return chr(index)
+
+
+def open_image(file):
+    # 打开图片
+    img = Image.open(file)
+    img = np.array(img)
+    if len(img.shape) > 2:
+        # 转换成灰度图像:(26,80,3) =>(26,80)
+        img = np.mean(img, -1)
+        img = img / 255
+    return img
 
 
 if __name__ == '__main__':
