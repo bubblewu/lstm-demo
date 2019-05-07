@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# @File  : image_util.py
+# @File  : image_convert.py
 # @Author: wu gang
 # @Date  : 2019/5/6
 # @Desc  : 调整图片尺寸
